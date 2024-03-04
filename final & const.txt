@@ -1,0 +1,36 @@
+공통점
+ - 변수 재할당 방지
+
+차이점
+ - final : 변수의 참조 재할당을 방지하는 역할
+ - const : 컴파일 타임에 계산될 수 있는 상수를 선언하는 역할
+   ex) final a = DateTime.now(); 가능
+       const b = DateTime.new(); 불가능 : DateTime.now() 는 런타임에 결정되기 때문
+
+ - late ( 변수의 초기값을 나중에 할당하겠다 )
+    - final : late 키워드 사용 가능
+    - const : late 키워드 사용 불가능 ( 컴파일 타임에 선언되므로 나중이 없다 )
+
+ - 값 변경 여부
+    - final : 값을 변경할 수 있다. ( 재할당을 막는 것뿐 기존의 값을 변경하는 것은 가능 )
+    - const : 값을 변경할 수 없다.
+    - final 은 변수 재할당 방지만 담당할 뿐, 객체 생성과 관련이 없기 때문에 다음과 같은 결과가 나온다.
+      따라서 final은 각기 다른 객체를 만들고, const 는 값이 동일하기 때문에 객체를 하나만 만든 뒤 참조(주소)를 공유한다.
+      ex) final a = [];
+          a.add(1); 가능
+
+          const b = [];
+          b.add(1); 불가능, 런타임 에러
+
+          final a1 = [];
+          final a2 = [];
+          print(a1 == a2); // false (메모리 주소 다름, 가변 배열)
+        
+          const b1 = [];
+          const b2 = [];
+          print(b1 == b2); // true (메모리 주소 동일, 불변 배열)
+        
+          final c1 = const [];
+          final c2 = const [];
+          print(c1 == c2); // true (메모리 주소 동일, 불변 배열)
+
