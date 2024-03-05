@@ -20,10 +20,14 @@ class _HomePageState extends State<HomePage> {
 
   void onProductPressed(Product product) {
     setState(() {
+      // 기존의 배열을 유지하게 되면 oldWidget.cartProductList 와 비교할 때 같은 배열로 인식되어 updateShouldNotify 가 호출되지 않는다.
       if (cartProductList.contains(product)) {
-        cartProductList.remove(product);
+        // cartProductList.remove(product);
+        cartProductList =
+            cartProductList.where((element) => element != product).toList();
       } else {
-        cartProductList.add(product);
+        // cartProductList.add(product);
+        cartProductList = [...cartProductList, product];
       }
     });
   }

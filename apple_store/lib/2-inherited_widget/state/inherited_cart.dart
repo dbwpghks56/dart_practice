@@ -17,7 +17,8 @@ class InheritedCart extends InheritedWidget {
 
   @override
   bool updateShouldNotify(InheritedCart oldWidget) {
-    return true;
+    print("${cartProductList.length} vs ${oldWidget.cartProductList.length}");
+    return cartProductList != oldWidget.cartProductList;
   }
 
   // InheritedCart.of(context) 로 손쉽게 접근하도록 만든다.
