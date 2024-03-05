@@ -4,9 +4,14 @@ import '../common/product.dart';
 import '../common/product_tile.dart';
 
 class Cart extends StatelessWidget {
-  const Cart({super.key});
+  final List<Product> cartProductList;
+  final void Function(Product product) onPressed;
 
-  final List<Product> cartProductList = const [];
+  const Cart({
+    super.key,
+    required this.cartProductList,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,10 @@ class Cart extends StatelessWidget {
               itemBuilder: (context, index) {
                 Product product = cartProductList[index];
                 return ProductTile(
-                    product: product, isInCart: true, onPressed: (product) {});
+                  product: product,
+                  isInCart: true,
+                  onPressed: onPressed,
+                );
               },
             ),
     );
