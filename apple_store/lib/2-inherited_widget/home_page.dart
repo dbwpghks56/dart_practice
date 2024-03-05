@@ -44,12 +44,17 @@ class _HomePageState extends State<HomePage> {
             Cart(),
           ],
         ),
-        bottomNavigationBar: BottomBar(
-          currentIndex: currentIndex,
-          cartTotal: "${cartProductList.length}",
-          onTap: (index) => setState(() {
-            currentIndex = index;
-          }),
+        bottomNavigationBar: Builder(
+          builder: (context) {
+            final inheritedCart = context.read<InheritedCart>();
+            return BottomBar(
+              currentIndex: currentIndex,
+              cartTotal: "${inheritedCart.cartProductList.length}",
+              onTap: (index) => setState(() {
+                currentIndex = index;
+              }),
+            );
+          },
         ),
       ),
     );
