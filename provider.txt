@@ -33,3 +33,12 @@ StatefulWidget 생애 주기 활용 :
  - ChangeNotifierProvider.value로 Provider를 전달하면 해당 StatefulWidget이 위젯 트리에서 제거되어도 dispose()가 호출되지 않는다.
  - `value`는 `build()` 호출시 계속 실행되므로, 여기에서 Provider의 생성자를 호출하면 안 된다.
  - 부모 위젯이 제거되어도 Provider의 `dispose()` 메소드가 호출되지 않는다.
+
+Provider 를 이용한 상태관리 :
+ - 상태를 별도 클래스로 분리하므로 StatefulWidget 보다 유지 관리가 용이하다.
+ - InheritedWidget 보다 작성해야하는 보일러플레이트가 적다.
+ - 원하는 위젯만 선택적으로 갱신이 가능하다.
+ - Lazy Loading 지원 ( https://dartpad.dev/?id=58941d08723e173ecaa46a10fe833ebc )
+   - 자식 위젯이 접근하기 전까지 초기화를 진행하지 않는다.
+ - Provider가 부모 위젯으로 등록되어 있지 않은 경우, 자식 위젯에서 접근시 런타임에러가 발생한다.
+ - 위젯 트리상에 등록시 의존성 순서가 중요하다.
