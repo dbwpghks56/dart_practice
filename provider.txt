@@ -1,4 +1,4 @@
-Provider 접근 방법
+Provider 접근 방법 :
  - context.watch() : notifyListeners() 호출시 위젯 갱신
  - context.read() : notifyListeners() 가 호출되어도 갱신하지 않음
  - context.select() : watch 와 동일하나, 특정 속성이 변경된 경우에만 갱신
