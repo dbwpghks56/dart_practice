@@ -79,3 +79,10 @@ Riverpod 제공자 종류 :
  - AutoDisposeFamilyNotifier : 위 두 가지를 같이 쓰고 싶을 때 쓰면 된다.
 
 Riverpod 은 코드 생성 또한 지원한다.
+
+Riverpod 특징 :
+ - 위젯 트리상에 직접 의존성 순서에 맞춰 등록할 필요가 없다.
+ - 동일한 Provider도 별도 변수로 선언하므로 접근할 수 있다.
+   - 전역 변수가 늘어난다.
+ - WidgetRef를 사용하여 Flutter에 의존하지 않는다.
+   - ConsumerWidget과같이 WidgetRef를 사용하기 위한 코드가 필요하다.
