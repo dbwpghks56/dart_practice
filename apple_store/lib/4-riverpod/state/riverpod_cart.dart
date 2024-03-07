@@ -7,13 +7,13 @@ final cartProvider =
 class RiverpodCart extends Notifier<List<Product>> {
   @override
   List<Product> build() {
-    return [];
+    return const [];
   }
 
   /// 상품 클릭
   void onProductPressed(Product product) {
     if (state.contains(product)) {
-      state.where((element) => element != product).toList();
+      state = state.where((element) => element != product).toList();
     } else {
       state = [...state, product];
     }
