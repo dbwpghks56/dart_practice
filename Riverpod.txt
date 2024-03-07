@@ -62,3 +62,20 @@ Riverpod 제공자 종류 :
    - `WidgetRef`를 이용해 쉽게 접근할 수 있으며, 하나의 인스턴스만 생성하여 여러곳에서 활용 가능합니다.
 
  NotifierProvider & Provider 만 알아도 대부분의 상황을 대처할 수 있다.
+
+ autoDispose & family :
+  - autoDispose : Riverpod은 기본적으로 해당 Provider가 더 이상 사용되지 않아도 상태가 유지된다.
+    - autoDispose를 이용하는 경우 해당 Provider가 더 이상 사용되지 않는 경우 자동으로 삭제됩니다.
+    - NotifierProvider 뒤에 .autoDispose를 추가한 뒤, Notifier를 AutoDisposeNotifier로 변경하면 됩니다.
+
+ - family : family를 이용하면 Provider에 매개 변수를 추가할 수 있습니다.
+   - `.family`를 붙입니다.
+   - 매개 변수 타입을 명시합니다.
+   - `build()` 메소드에 매개 변수를 명시합니다.
+   - `counterProvider(10)`과 같이 원하는 초기값을 전달할 수 있습니다.
+   - `ref.read(counterProvider(10))`에서도 처음 전달한 매개 변수와 동일한 값을 전달해야 합니다.
+   - family로 전달한 매개 변수는 Unique Key(Provider 식별자)로도 사용되기 때문에, 다른 매개 변수를 전달하면 다른 Provider로 인식됩니다.
+
+ - AutoDisposeFamilyNotifier : 위 두 가지를 같이 쓰고 싶을 때 쓰면 된다.
+
+Riverpod 은 코드 생성 또한 지원한다.
