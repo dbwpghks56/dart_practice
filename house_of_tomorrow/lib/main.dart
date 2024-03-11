@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:house_of_tomorrow/src/service/theme_service.dart';
+import 'package:house_of_tomorrow/src/view/shopping/shopping_view.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -20,13 +21,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Center(
-          child: Text("Hello House Of Tomorrow"),
-        ),
-      ),
+      theme: context.themeService.themeData,
+      home: const ShoppingView(),
     );
   }
 }
