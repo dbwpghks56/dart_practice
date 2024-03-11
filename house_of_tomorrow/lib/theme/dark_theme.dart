@@ -3,7 +3,7 @@ import 'package:house_of_tomorrow/theme/foundation/app_theme.dart';
 import 'package:house_of_tomorrow/theme/res/palette.dart';
 import 'package:house_of_tomorrow/theme/res/typo.dart';
 
-class DartTheme implements AppTheme {
+class DarkTheme implements AppTheme {
   @override
   Brightness brightness = Brightness.dark;
 
