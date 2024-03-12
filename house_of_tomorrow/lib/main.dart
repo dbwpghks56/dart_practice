@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:house_of_tomorrow/src/service/theme_service.dart';
 import 'package:house_of_tomorrow/src/view/shopping/shopping_view.dart';
-import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (context) => ThemeService(),
-        ),
-      ],
-      child: const MyApp(),
-    ),
+    const MyApp(),
   );
 }
 
@@ -21,10 +14,34 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: context.themeService.themeData,
-      home: const ShoppingView(),
+    return ProviderScope(
+      child: Consumer(
+        builder: (context, ref, child) {
+          final themeDatas = ref.watch(themeProvider);
+
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              /// Scaffold
+              scaffoldBackgroundColor: themeDatas.color.surface,
+
+              /// AppBar
+              appBarTheme: AppBarTheme(
+                backgroundColor: themeDatas.color.surface,
+                elevation: 0,
+                centerTitle: false,
+                iconTheme: IconThemeData(
+                  color: themeDatas.color.text,
+                ),
+                titleTextStyle: themeDatas.typo.headline2.copyWith(
+                  color: themeDatas.color.text,
+                ),
+              ),
+            ),
+            home: const ShoppingView(),
+          );
+        },
+      ),
     );
   }
 }

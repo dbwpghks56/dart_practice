@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:house_of_tomorrow/src/service/theme_service.dart';
-import 'package:provider/provider.dart';
+import 'package:house_of_tomorrow/theme/foundation/app_theme.dart';
 
-class ShoppingView extends StatelessWidget {
+class ShoppingView extends ConsumerWidget {
   const ShoppingView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    AppTheme theme = ref.watch(themeProvider);
+
     return Scaffold(
       body: Center(
         child: TextButton(
-          onPressed: context.read<ThemeService>().toggleTheme,
+          onPressed: ref.read(themeProvider.notifier).toggleTheme,
           child: Text(
             "Toggle Theme",
-            style: context.typo.headline6,
+            style: theme.typo.headline6,
           ),
         ),
       ),
