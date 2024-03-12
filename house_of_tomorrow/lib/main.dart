@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:house_of_tomorrow/src/service/theme_service.dart';
 import 'package:house_of_tomorrow/src/view/shopping/shopping_view.dart';
+import 'package:house_of_tomorrow/util/lang/generated/l10n.dart';
 
 void main() {
   runApp(
@@ -20,6 +22,13 @@ class MyApp extends StatelessWidget {
           final themeDatas = ref.watch(themeProvider);
 
           return MaterialApp(
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               /// Scaffold
