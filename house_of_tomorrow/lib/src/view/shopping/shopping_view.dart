@@ -13,7 +13,7 @@ class ShoppingView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     AppTheme theme = ref.watch(themeProvider);
-    Locale locale = ref.watch(langProvider);
+    Locale localeData = ref.watch(langProvider);
 
     return Scaffold(
       appBar: AppBar(

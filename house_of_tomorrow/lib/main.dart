@@ -49,6 +49,9 @@ class MyApp extends StatelessWidget {
                 color: themeDatas.color.text,
               ),
             ),
+            bottomSheetTheme: const BottomSheetThemeData(
+              backgroundColor: Colors.transparent,
+            ),
           ),
           home: const ShoppingView(),
         );
