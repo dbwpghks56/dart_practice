@@ -11,7 +11,6 @@ class RiverpodLang extends Notifier<Locale> {
   }
 
   void toggleLang() {
-    print(state);
     state = IntlHelper.isKo ? IntlHelper.en : IntlHelper.ko;
   }
 }
