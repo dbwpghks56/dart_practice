@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:house_of_tomorrow/src/service/lang_service.dart';
 import 'package:house_of_tomorrow/src/service/theme_service.dart';
+import 'package:house_of_tomorrow/theme/component/button/button.dart';
 import 'package:house_of_tomorrow/theme/foundation/app_theme.dart';
 import 'package:house_of_tomorrow/util/lang/generated/l10n.dart';
 
@@ -18,6 +19,14 @@ class ShoppingView extends ConsumerWidget {
         title: Text(
           S.current.shopping,
         ),
+        actions: [
+          // 설정 버튼
+          Button(
+            onPressed: () {},
+            icon: 'option',
+            type: ButtonType.flat,
+          )
+        ],
       ),
       body: Center(
         child: Column(
