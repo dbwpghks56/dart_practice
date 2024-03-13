@@ -8,7 +8,9 @@ import 'package:house_of_tomorrow/util/lang/generated/l10n.dart';
 
 void main() {
   runApp(
-    const MyApp(),
+    const ProviderScope(
+      child: MyApp(),
+    ),
   );
 }
 
@@ -17,42 +19,43 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProviderScope(
-      child: Consumer(
-        builder: (context, ref, child) {
-          final themeDatas = ref.watch(themeProvider);
+    return Consumer(
+      builder: (context, ref, child) {
+        final themeDatas = ref.watch(themeProvider);
 
-          return MaterialApp(
-            localizationsDelegates: const [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: S.delegate.supportedLocales,
-            debugShowCheckedModeBanner: false,
-            locale: ref.watch(langProvider),
-            theme: ThemeData(
-              /// Scaffold
-              scaffoldBackgroundColor: themeDatas.color.surface,
+        return MaterialApp(
+          localizationsDelegates: const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+          debugShowCheckedModeBanner: false,
+          locale: ref.watch(langProvider),
+          theme: ThemeData(
+            /// Scaffold
+            scaffoldBackgroundColor: themeDatas.color.surface,
 
-              /// AppBar
-              appBarTheme: AppBarTheme(
-                backgroundColor: themeDatas.color.surface,
-                elevation: 0,
-                centerTitle: false,
-                iconTheme: IconThemeData(
-                  color: themeDatas.color.text,
-                ),
-                titleTextStyle: themeDatas.typo.headline2.copyWith(
-                  color: themeDatas.color.text,
-                ),
+            /// AppBar
+            appBarTheme: AppBarTheme(
+              backgroundColor: themeDatas.color.surface,
+              elevation: 0,
+              centerTitle: false,
+              iconTheme: IconThemeData(
+                color: themeDatas.color.text,
+              ),
+              titleTextStyle: themeDatas.typo.headline2.copyWith(
+                color: themeDatas.color.text,
               ),
             ),
-            home: const ShoppingView(),
-          );
-        },
-      ),
+            bottomSheetTheme: const BottomSheetThemeData(
+              backgroundColor: Colors.transparent,
+            ),
+          ),
+          home: const ShoppingView(),
+        );
+      },
     );
   }
 }
