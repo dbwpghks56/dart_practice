@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:house_of_tomorrow/src/service/lang_service.dart';
 import 'package:house_of_tomorrow/src/service/theme_service.dart';
+import 'package:house_of_tomorrow/theme/component/bottom_sheet/setting_bottom_sheet.dart';
 import 'package:house_of_tomorrow/theme/component/button/button.dart';
 import 'package:house_of_tomorrow/theme/foundation/app_theme.dart';
 import 'package:house_of_tomorrow/util/lang/generated/l10n.dart';
@@ -22,7 +23,14 @@ class ShoppingView extends ConsumerWidget {
         actions: [
           // 설정 버튼
           Button(
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return const SettingBottomSheet();
+                },
+              );
+            },
             icon: 'option',
             type: ButtonType.flat,
           )
