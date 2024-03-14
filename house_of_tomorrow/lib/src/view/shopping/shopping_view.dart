@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:house_of_tomorrow/src/model/product.dart';
 import 'package:house_of_tomorrow/src/service/lang_service.dart';
 import 'package:house_of_tomorrow/src/service/theme_service.dart';
+import 'package:house_of_tomorrow/src/view/shopping/widget/product_card.dart';
 import 'package:house_of_tomorrow/theme/component/bottom_sheet/setting_bottom_sheet.dart';
 import 'package:house_of_tomorrow/theme/component/button/button.dart';
 import 'package:house_of_tomorrow/theme/component/input_field.dart';
@@ -37,6 +38,13 @@ class ShoppingView extends HookConsumerWidget {
         log('Failed to fetch product list', error: e, stackTrace: s);
       }
     }
+
+    useEffect(() {
+      searchProductList();
+
+      // dispose 될 때 호출
+      return null;
+    }, []);
 
     return Scaffold(
       appBar: AppBar(
@@ -82,7 +90,11 @@ class ShoppingView extends HookConsumerWidget {
                 ),
               ],
             ),
-          )
+          ),
+          if (productList.value.isNotEmpty)
+            ProductCard(
+              product: productList.value[0],
+            )
         ],
       ),
     );
