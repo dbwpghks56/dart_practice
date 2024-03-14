@@ -7,9 +7,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:house_of_tomorrow/src/model/product.dart';
 import 'package:house_of_tomorrow/src/service/lang_service.dart';
 import 'package:house_of_tomorrow/src/service/theme_service.dart';
-import 'package:house_of_tomorrow/src/view/shopping/widget/product_card.dart';
+import 'package:house_of_tomorrow/src/view/shopping/widget/product_card_grid.dart';
+import 'package:house_of_tomorrow/src/view/shopping/widget/product_empty.dart';
 import 'package:house_of_tomorrow/theme/component/bottom_sheet/setting_bottom_sheet.dart';
 import 'package:house_of_tomorrow/theme/component/button/button.dart';
+import 'package:house_of_tomorrow/theme/component/hide_keyboard.dart';
 import 'package:house_of_tomorrow/theme/component/input_field.dart';
 import 'package:house_of_tomorrow/theme/foundation/app_theme.dart';
 import 'package:house_of_tomorrow/util/helper/network_helper.dart';
@@ -25,7 +27,11 @@ class ShoppingView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     AppTheme theme = ref.watch(themeProvider);
     Locale localeData = ref.watch(langProvider);
+
     var productList = useState([]);
+
+    final textEditing = useTextEditingController();
+    String getSearchText() => textEditing.text.trim();
 
     Future<void> searchProductList() async {
       try {
@@ -33,6 +39,12 @@ class ShoppingView extends HookConsumerWidget {
 
         productList.value = jsonDecode(res.data).map<Product>((json) {
           return Product.fromJson(json);
+        }).where((product) {
+          if (getSearchText().isEmpty) return true;
+
+          return "${product.name}${product.brand}"
+              .toLowerCase()
+              .contains(getSearchText().toLowerCase());
         }).toList();
       } catch (e, s) {
         log('Failed to fetch product list', error: e, stackTrace: s);
@@ -46,56 +58,68 @@ class ShoppingView extends HookConsumerWidget {
       return null;
     }, []);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          S.current.shopping,
-        ),
-        actions: [
-          // 설정 버튼
-          Button(
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return const SettingBottomSheet();
-                },
-              );
-            },
-            icon: 'option',
-            type: ButtonType.flat,
-          )
-        ],
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: InputField(
-                    hint: S.current.searchProduct,
-                  ),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                Button(
-                  icon: 'search',
-                  onPressed: searchProductList,
-                ),
-              ],
-            ),
+    return HideKeyboard(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            S.current.shopping,
           ),
-          if (productList.value.isNotEmpty)
-            ProductCard(
-              product: productList.value[0],
+          actions: [
+            // 설정 버튼
+            Button(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return const SettingBottomSheet();
+                  },
+                );
+              },
+              icon: 'option',
+              type: ButtonType.flat,
             )
-        ],
+          ],
+        ),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: InputField(
+                      hint: S.current.searchProduct,
+                      controller: textEditing,
+                      onChanged: (text) {
+                        textEditing.text = text;
+                        log(getSearchText());
+                      },
+                      onClear: searchProductList,
+                      onSubmitted: (text) => searchProductList(),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  Button(
+                    icon: 'search',
+                    onPressed: searchProductList,
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: productList.value.isEmpty
+                  ? const ProductEmpty()
+                  : ProductCardGrid(
+                      productList: productList.value as List<Product>,
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }
