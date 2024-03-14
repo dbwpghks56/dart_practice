@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:house_of_tomorrow/src/model/product.dart';
 import 'package:house_of_tomorrow/src/service/lang_service.dart';
 import 'package:house_of_tomorrow/src/service/theme_service.dart';
 import 'package:house_of_tomorrow/theme/component/bottom_sheet/setting_bottom_sheet.dart';
@@ -28,7 +30,9 @@ class ShoppingView extends HookConsumerWidget {
       try {
         final res = await NetworkHelper.dio.get(PRODUCTURL);
 
-        print(res.data);
+        productList.value = jsonDecode(res.data).map<Product>((json) {
+          return Product.fromJson(json);
+        }).toList();
       } catch (e, s) {
         log('Failed to fetch product list', error: e, stackTrace: s);
       }
