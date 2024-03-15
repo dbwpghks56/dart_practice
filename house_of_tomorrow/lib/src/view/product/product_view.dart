@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:house_of_tomorrow/src/model/product.dart';
 import 'package:house_of_tomorrow/theme/component/pop_button.dart';
 import 'package:house_of_tomorrow/util/lang/generated/l10n.dart';
 
-class ProductView extends ConsumerWidget {
+class ProductView extends HookConsumerWidget {
   const ProductView({
     super.key,
     required this.product,
@@ -14,6 +15,18 @@ class ProductView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var count = useState(1);
+
+    var colorIndex = useState(0);
+
+    void onCountChange(int newCount) {
+      count.value = newCount;
+    }
+
+    void onColorIndexChange(int newColorIndex) {
+      colorIndex.value = newColorIndex;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(S.current.product),
