@@ -95,7 +95,6 @@ class ShoppingView extends HookConsumerWidget {
                       controller: textEditing,
                       onChanged: (text) {
                         textEditing.text = text;
-                        log(getSearchText());
                       },
                       onClear: searchProductList,
                       onSubmitted: (text) => searchProductList(),
