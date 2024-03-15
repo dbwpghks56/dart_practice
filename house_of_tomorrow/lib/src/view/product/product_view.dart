@@ -5,6 +5,7 @@ import 'package:house_of_tomorrow/src/model/product.dart';
 import 'package:house_of_tomorrow/src/view/product/widget/product_color_preview.dart';
 import 'package:house_of_tomorrow/src/view/product/widget/product_desc.dart';
 import 'package:house_of_tomorrow/theme/component/color_picker.dart';
+import 'package:house_of_tomorrow/theme/component/counter_button.dart';
 import 'package:house_of_tomorrow/theme/component/pop_button.dart';
 import 'package:house_of_tomorrow/util/lang/generated/l10n.dart';
 
@@ -57,6 +58,10 @@ class ProductView extends HookConsumerWidget {
             ),
             ProductDesc(
               product: product,
+            ),
+            CounterButton(
+              count: count.value,
+              onChanged: onCountChange,
             ),
           ],
         ),
