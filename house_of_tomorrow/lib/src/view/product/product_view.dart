@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:house_of_tomorrow/src/model/product.dart';
+import 'package:house_of_tomorrow/src/view/product/widget/product_color_preview.dart';
 import 'package:house_of_tomorrow/theme/component/pop_button.dart';
 import 'package:house_of_tomorrow/util/lang/generated/l10n.dart';
 
@@ -32,6 +33,14 @@ class ProductView extends HookConsumerWidget {
         title: Text(S.current.product),
         leading: const PopButton(),
         titleSpacing: 0,
+      ),
+      body: Column(
+        children: [
+          ProductColorPreview(
+            colorIndex: colorIndex.value,
+            product: product,
+          ),
+        ],
       ),
     );
   }
