@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,11 +34,15 @@ class ProductColorPreview extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(24),
-            child: Image.network(
-              product.productColorList[colorIndex].imageUrl,
-              fit: BoxFit.cover,
+          AspectRatio(
+            aspectRatio: 1 / 0.8, // 폭과 높이 비율 지정
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(24),
+              child: CachedNetworkImage(
+                imageUrl: product.productColorList[colorIndex].imageUrl,
+                fit: BoxFit.cover,
+                width: double.infinity,
+              ),
             ),
           ),
           const SizedBox(height: 16),
