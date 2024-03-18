@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:house_of_tomorrow/src/model/cart_item.dart';
 import 'package:house_of_tomorrow/src/model/product.dart';
+import 'package:house_of_tomorrow/src/service/cart_service.dart';
 import 'package:house_of_tomorrow/src/view/product/widget/product_bottomsheet.dart';
 import 'package:house_of_tomorrow/src/view/product/widget/product_color_preview.dart';
 import 'package:house_of_tomorrow/src/view/product/widget/product_desc.dart';
@@ -30,6 +32,18 @@ class ProductView extends HookConsumerWidget {
 
     void onColorIndexChange(int newColorIndex) {
       colorIndex.value = newColorIndex;
+    }
+
+    // 카트에 상품 추가
+    void onAddToCartPressed() {
+      final CartItem newCartItem = CartItem(
+        product: product,
+        count: count.value,
+        colorIndex: colorIndex.value,
+        isSelected: true,
+      );
+
+      ref.read(cartProvider.notifier).add(newCartItem);
     }
 
     return Scaffold(
@@ -74,7 +88,7 @@ class ProductView extends HookConsumerWidget {
             count: count.value,
             product: product,
             onCountChange: onCountChange,
-            onAddtToCartPressed: () {},
+            onAddtToCartPressed: onAddToCartPressed,
           ),
         ],
       ),

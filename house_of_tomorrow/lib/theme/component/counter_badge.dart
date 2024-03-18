@@ -25,13 +25,16 @@ class CounterBadge extends ConsumerWidget {
         Positioned(
           top: 10,
           right: 6,
-          child: CircleAvatar(
-            backgroundColor: themeData.color.secondary,
-            radius: isShow ? 10 : 0,
-            child: Text(
-              label,
-              style: themeData.typo.body2.copyWith(
-                color: themeData.color.onSecondary,
+          child: IgnorePointer(
+            ignoring: true,
+            child: CircleAvatar(
+              backgroundColor: themeData.color.secondary,
+              radius: isShow ? 10 : 0,
+              child: Text(
+                label,
+                style: themeData.typo.body2.copyWith(
+                  color: themeData.color.onSecondary,
+                ),
               ),
             ),
           ),
