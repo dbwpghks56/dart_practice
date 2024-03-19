@@ -4,6 +4,7 @@ import 'package:house_of_tomorrow/src/model/cart_item.dart';
 import 'package:house_of_tomorrow/src/service/cart_service.dart';
 import 'package:house_of_tomorrow/src/service/theme_service.dart';
 import 'package:house_of_tomorrow/src/view/cart/widget/cart_bottom_sheet.dart';
+import 'package:house_of_tomorrow/src/view/cart/widget/cart_checkout_dialog.dart';
 import 'package:house_of_tomorrow/src/view/cart/widget/cart_delete_dialog.dart';
 import 'package:house_of_tomorrow/src/view/cart/widget/cart_empty.dart';
 import 'package:house_of_tomorrow/src/view/cart/widget/cart_item_tile.dart';
@@ -89,7 +90,18 @@ class CartView extends ConsumerWidget {
                       return prev + (curr.product.price * curr.count);
                     })),
             selectedCartItemList: cartData,
-            onCheckOutPressed: () {},
+            onCheckOutPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return CartCheckoutDialog(
+                    onCheckoutPressed: () {
+                      ref.read(cartProvider.notifier).delete(selectedCartData);
+                    },
+                  );
+                },
+              );
+            },
           )
         ],
       ),
