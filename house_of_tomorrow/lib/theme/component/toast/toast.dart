@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:house_of_tomorrow/main.dart';
 import 'package:house_of_tomorrow/theme/component/toast/toast_builder.dart';
 
 abstract class Toast {
   static void show(
-    BuildContext context,
     String text, {
     Duration duration = const Duration(seconds: 3),
   }) async {
+    BuildContext? context = MyApp.navigatorKey.currentContext;
+    if (context == null) return;
+
     // insert
     GlobalKey<ToastBuilderState> toastKey = GlobalKey();
     final overlay = Overlay.of(context);

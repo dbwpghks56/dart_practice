@@ -45,7 +45,7 @@ class ProductView extends HookConsumerWidget {
       );
 
       ref.read(cartProvider.notifier).add(newCartItem);
-      Toast.show(context, S.current.productAdded(product.name));
+      Toast.show(S.current.productAdded(product.name));
     }
 
     return Scaffold(
