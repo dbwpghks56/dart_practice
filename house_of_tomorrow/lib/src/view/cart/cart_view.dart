@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:house_of_tomorrow/src/model/cart_item.dart';
+import 'package:house_of_tomorrow/src/service/cart_service.dart';
+import 'package:house_of_tomorrow/src/view/cart/widget/cart_empty.dart';
+import 'package:house_of_tomorrow/src/view/cart/widget/cart_item_tile.dart';
 import 'package:house_of_tomorrow/theme/component/pop_button.dart';
 import 'package:house_of_tomorrow/util/lang/generated/l10n.dart';
 
@@ -8,12 +12,35 @@ class CartView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final cartData = ref.watch(cartProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(S.current.cart),
         leading: const PopButton(),
         titleSpacing: 0,
       ),
+      body: cartData.isEmpty
+          ? const CartEmpty()
+          : ListView.builder(
+              itemCount: cartData.length,
+              itemBuilder: (context, index) {
+                final CartItem cartItem = cartData[index];
+
+                return CartItemTile(
+                  cartItem: cartItem,
+                  onPressed: () {
+                    ref.read(cartProvider.notifier).update(index,
+                        cartItem.copyWith(isSelected: !cartItem.isSelected));
+                  },
+                  onCountChanged: (count) {
+                    ref
+                        .read(cartProvider.notifier)
+                        .update(index, cartItem.copyWith(count: count));
+                  },
+                );
+              },
+            ),
     );
   }
 }
