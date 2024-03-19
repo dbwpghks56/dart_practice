@@ -41,7 +41,9 @@ class CartBottomSheet extends ConsumerWidget {
               ),
               const Spacer(),
               Text(
-                S.current.items(selectedCartItemList.length),
+                S.current.items(selectedCartItemList
+                    .where((element) => element.isSelected)
+                    .length),
                 style: themeData.typo.headline3.copyWith(
                   color: themeData.color.primary,
                 ),
