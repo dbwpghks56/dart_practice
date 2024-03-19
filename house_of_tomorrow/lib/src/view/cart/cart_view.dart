@@ -10,6 +10,7 @@ import 'package:house_of_tomorrow/src/view/cart/widget/cart_empty.dart';
 import 'package:house_of_tomorrow/src/view/cart/widget/cart_item_tile.dart';
 import 'package:house_of_tomorrow/theme/component/button/button.dart';
 import 'package:house_of_tomorrow/theme/component/pop_button.dart';
+import 'package:house_of_tomorrow/theme/component/toast/toast.dart';
 import 'package:house_of_tomorrow/util/helper/intl_helper.dart';
 import 'package:house_of_tomorrow/util/lang/generated/l10n.dart';
 
@@ -37,6 +38,7 @@ class CartView extends ConsumerWidget {
                   return CartDeleteDialog(
                     onDeletePressed: () {
                       ref.read(cartProvider.notifier).delete(selectedCartData);
+                      Toast.show(S.current.deleteDialogSuccessToast);
                     },
                   );
                 },
@@ -97,6 +99,7 @@ class CartView extends ConsumerWidget {
                   return CartCheckoutDialog(
                     onCheckoutPressed: () {
                       ref.read(cartProvider.notifier).delete(selectedCartData);
+                      Toast.show(S.current.checkoutDialogSuccessToast);
                     },
                   );
                 },
