@@ -7,20 +7,24 @@ class BaseBottomSheet extends ConsumerWidget {
     super.key,
     required this.child,
     this.padding,
+    this.isRoundAll,
   });
 
   final Widget child;
   final EdgeInsets? padding;
+  final bool? isRoundAll;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       decoration: BoxDecoration(
         color: ref.watch(themeProvider).color.surface,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(24),
-          topRight: Radius.circular(24),
-        ),
+        borderRadius: isRoundAll ?? false
+            ? BorderRadius.circular(24)
+            : const BorderRadius.only(
+                topLeft: Radius.circular(24),
+                topRight: Radius.circular(24),
+              ),
         boxShadow: ref.watch(themeProvider).deco.shadow,
       ),
       padding: padding ??

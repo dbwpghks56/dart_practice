@@ -8,6 +8,7 @@ import 'package:house_of_tomorrow/src/view/cart/widget/cart_checkout_dialog.dart
 import 'package:house_of_tomorrow/src/view/cart/widget/cart_delete_dialog.dart';
 import 'package:house_of_tomorrow/src/view/cart/widget/cart_empty.dart';
 import 'package:house_of_tomorrow/src/view/cart/widget/cart_item_tile.dart';
+import 'package:house_of_tomorrow/src/view/cart/widget/cart_layout.dart';
 import 'package:house_of_tomorrow/theme/component/button/button.dart';
 import 'package:house_of_tomorrow/theme/component/pop_button.dart';
 import 'package:house_of_tomorrow/theme/component/toast/toast.dart';
@@ -51,62 +52,58 @@ class CartView extends ConsumerWidget {
           )
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: cartData.isEmpty
-                ? const CartEmpty()
-                : ListView.builder(
-                    itemCount: cartData.length,
-                    itemBuilder: (context, index) {
-                      final CartItem cartItem = cartData[index];
+      body: CartLayout(
+        cartItemList: cartData.isEmpty
+            ? const CartEmpty()
+            : ListView.builder(
+                itemCount: cartData.length,
+                itemBuilder: (context, index) {
+                  final CartItem cartItem = cartData[index];
 
-                      return CartItemTile(
-                        cartItem: cartItem,
-                        onPressed: () {
-                          ref.read(cartProvider.notifier).update(
-                                index,
-                                cartItem.copyWith(
-                                  isSelected: !cartItem.isSelected,
-                                ),
-                              );
-                        },
-                        onCountChanged: (count) {
-                          ref.read(cartProvider.notifier).update(
-                                index,
-                                cartItem.copyWith(
-                                  count: count,
-                                ),
-                              );
-                        },
-                      );
+                  return CartItemTile(
+                    cartItem: cartItem,
+                    onPressed: () {
+                      ref.read(cartProvider.notifier).update(
+                            index,
+                            cartItem.copyWith(
+                              isSelected: !cartItem.isSelected,
+                            ),
+                          );
                     },
-                  ),
-          ),
-          CartBottomSheet(
-            totalPrice: selectedCartData.isEmpty
-                ? '0'
-                : IntlHelper.currency(
-                    symbol: selectedCartData.first.product.priceUnit,
-                    number: selectedCartData.fold(0, (prev, curr) {
-                      return prev + (curr.product.price * curr.count);
-                    })),
-            selectedCartItemList: cartData,
-            onCheckOutPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return CartCheckoutDialog(
-                    onCheckoutPressed: () {
-                      ref.read(cartProvider.notifier).delete(selectedCartData);
-                      Toast.show(S.current.checkoutDialogSuccessToast);
+                    onCountChanged: (count) {
+                      ref.read(cartProvider.notifier).update(
+                            index,
+                            cartItem.copyWith(
+                              count: count,
+                            ),
+                          );
                     },
                   );
                 },
-              );
-            },
-          )
-        ],
+              ),
+        cartBottomSheet: CartBottomSheet(
+          totalPrice: selectedCartData.isEmpty
+              ? '0'
+              : IntlHelper.currency(
+                  symbol: selectedCartData.first.product.priceUnit,
+                  number: selectedCartData.fold(0, (prev, curr) {
+                    return prev + (curr.product.price * curr.count);
+                  })),
+          selectedCartItemList: cartData,
+          onCheckOutPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return CartCheckoutDialog(
+                  onCheckoutPressed: () {
+                    ref.read(cartProvider.notifier).delete(selectedCartData);
+                    Toast.show(S.current.checkoutDialogSuccessToast);
+                  },
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:house_of_tomorrow/src/model/product.dart';
 import 'package:house_of_tomorrow/src/view/shopping/widget/product_card.dart';
+import 'package:house_of_tomorrow/theme/res/layout.dart';
 
 class ProductCardGrid extends StatelessWidget {
   const ProductCardGrid({
@@ -14,7 +15,12 @@ class ProductCardGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MasonryGridView.count(
-      crossAxisCount: 2,
+      crossAxisCount: context.layout(
+        2,
+        desktop: 4,
+        tablet: 3,
+        mobile: 2,
+      ),
       mainAxisSpacing: 14,
       crossAxisSpacing: 16,
       padding: const EdgeInsets.symmetric(

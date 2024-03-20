@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:house_of_tomorrow/src/service/lang_service.dart';
 import 'package:house_of_tomorrow/src/service/theme_service.dart';
+import 'package:house_of_tomorrow/theme/res/layout.dart';
 import 'package:house_of_tomorrow/util/lang/generated/l10n.dart';
 import 'package:house_of_tomorrow/util/route_path.dart';
 
@@ -63,6 +64,9 @@ class MyApp extends StatelessWidget {
             ),
             bottomSheetTheme: const BottomSheetThemeData(
               backgroundColor: Colors.transparent,
+              constraints: BoxConstraints(
+                maxWidth: Breakpoints.bottomSheet,
+              ),
             ),
           ),
           initialRoute: RoutePath.shopping,
