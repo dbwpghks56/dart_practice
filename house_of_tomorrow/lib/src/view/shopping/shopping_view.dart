@@ -95,9 +95,6 @@ class ShoppingView extends HookConsumerWidget {
                     child: InputField(
                       hint: S.current.searchProduct,
                       controller: textEditing,
-                      onChanged: (text) {
-                        textEditing.text = text;
-                      },
                       onClear: searchProductList,
                       onSubmitted: (text) => searchProductList(),
                     ),

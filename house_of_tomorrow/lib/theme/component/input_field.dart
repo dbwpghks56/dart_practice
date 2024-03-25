@@ -33,10 +33,6 @@ class _InputFieldState extends ConsumerState<InputField> {
 
     return TextField(
       controller: _controller,
-      onChanged: (value) {
-        widget.onChanged?.call(value);
-        setState(() {});
-      },
       onSubmitted: widget.onSubmitted,
       style: themeData.typo.headline5,
       cursorColor: themeData.color.primary,
