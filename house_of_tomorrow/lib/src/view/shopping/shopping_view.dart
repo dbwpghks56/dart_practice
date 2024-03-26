@@ -1,10 +1,7 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:house_of_tomorrow/src/model/product.dart';
+import 'package:house_of_tomorrow/src/repository/product_repository.dart';
 import 'package:house_of_tomorrow/src/service/lang_service.dart';
 import 'package:house_of_tomorrow/src/service/theme_service.dart';
 import 'package:house_of_tomorrow/src/view/shopping/widget/product_card_grid.dart';
@@ -15,7 +12,6 @@ import 'package:house_of_tomorrow/theme/component/cart_button.dart';
 import 'package:house_of_tomorrow/theme/component/hide_keyboard.dart';
 import 'package:house_of_tomorrow/theme/component/input_field.dart';
 import 'package:house_of_tomorrow/theme/foundation/app_theme.dart';
-import 'package:house_of_tomorrow/util/helper/network_helper.dart';
 import 'package:house_of_tomorrow/util/lang/generated/l10n.dart';
 
 const String PRODUCTURL =
@@ -29,35 +25,10 @@ class ShoppingView extends HookConsumerWidget {
     AppTheme theme = ref.watch(themeProvider);
     Locale localeData = ref.watch(langProvider);
 
-    var productList = useState([]);
-
     final textEditing = useTextEditingController();
     String getSearchText() => textEditing.text.trim();
 
-    Future<void> searchProductList() async {
-      try {
-        final res = await NetworkHelper.dio.get(PRODUCTURL);
-
-        productList.value = jsonDecode(res.data).map<Product>((json) {
-          return Product.fromJson(json);
-        }).where((product) {
-          if (getSearchText().isEmpty) return true;
-
-          return "${product.name}${product.brand}"
-              .toLowerCase()
-              .contains(getSearchText().toLowerCase());
-        }).toList();
-      } catch (e, s) {
-        log('Failed to fetch product list', error: e, stackTrace: s);
-      }
-    }
-
-    useEffect(() {
-      searchProductList();
-
-      // dispose 될 때 호출
-      return null;
-    }, []);
+    final productListAsyncValue = ref.watch(findProductList(getSearchText()));
 
     return HideKeyboard(
       child: Scaffold(
@@ -95,8 +66,11 @@ class ShoppingView extends HookConsumerWidget {
                     child: InputField(
                       hint: S.current.searchProduct,
                       controller: textEditing,
-                      onClear: searchProductList,
-                      onSubmitted: (text) => searchProductList(),
+                      onClear: () =>
+                          ref.watch(findProductList(getSearchText())),
+                      onSubmitted: (text) =>
+                          ref.watch(// ref.refresh()를 사용하여 상태를 갱신합니다.
+                              findProductList(getSearchText())),
                     ),
                   ),
                   const SizedBox(
@@ -104,17 +78,26 @@ class ShoppingView extends HookConsumerWidget {
                   ),
                   Button(
                     icon: 'search',
-                    onPressed: searchProductList,
+                    onPressed: () =>
+                        ref.watch(findProductList(getSearchText())),
                   ),
                 ],
               ),
             ),
             Expanded(
-              child: productList.value.isEmpty
-                  ? const ProductEmpty()
-                  : ProductCardGrid(
-                      productList: productList.value as List<Product>,
-                    ),
+              child: productListAsyncValue.when(
+                data: (value) {
+                  return ProductCardGrid(
+                    productList: value,
+                  );
+                },
+                error: (error, stackTrace) {
+                  return const ProductEmpty();
+                },
+                loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
             ),
           ],
         ),
