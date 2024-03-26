@@ -8,7 +8,6 @@ import 'package:house_of_tomorrow/util/helper/network_helper.dart';
 
 final findProductList = FutureProvider.autoDispose
     .family<List<Product>, String>((ref, keyword) async {
-  await Future.delayed(const Duration(milliseconds: 555));
   try {
     final res = await NetworkHelper.dio.get(PRODUCTURL);
     final productList = jsonDecode(res.data)
